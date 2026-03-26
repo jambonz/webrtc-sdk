@@ -1,0 +1,23 @@
+{
+  "name": "jambonz-react-native-example",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "start": "react-native start"
+  },
+  "dependencies": {
+    "@jambonz/client-sdk-react-native": "file:../../packages/react-native",
+    "react-native-webrtc": "^124.0.0",
+    "react": "^19.2.3",
+    "react-native": "^0.84.0"
+  },
+  "devDependencies": {
+    "@react-native-community/cli": "latest",
+    "@react-native/metro-config": "^0.84.0",
+    "@react-native/typescript-config": "^0.84.0",
+    "@types/react": "^19.2.0",
+    "typescript": "^5.4.0"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "name": "@jambonz/client-sdk-core",
+  "version": "0.1.0",
+  "description": "Core logic for Jambonz WebRTC SDK",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsup",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "jssip": "^3.10.1"
+  },
+  "peerDependencies": {
+    "react": ">=17.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.4.0"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jambonz/jambonz-webrtc-sdk.git",
+    "directory": "packages/core"
+  },
+  "keywords": ["jambonz", "webrtc", "sip", "voip", "jssip"],
+  "publishConfig": {
+    "access": "public"
+  }
+}

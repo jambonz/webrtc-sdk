@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+*.tsbuildinfo
+
+# Turbo cache
+.turbo/
+
+# Test artifacts
+test-results/
+playwright-report/
+.env.test
+
+# Android build
+examples/react-native/android/build/
+examples/react-native/android/app/build/
+examples/react-native/android/app/.cxx/
+examples/react-native/android/.gradle/
+
+# iOS build
+examples/react-native/ios/Pods/
+examples/react-native/ios/build/
+
+# Web example build
+examples/web/dist/
+
+# OS files
+.DS_Store
+Thumbs.db
