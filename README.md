@@ -285,6 +285,33 @@ client.call(target, {
 });
 ```
 
+## For AI Agents
+
+This SDK is designed to be consumed by AI coding agents. See:
+
+- **[AGENTS.md](AGENTS.md)** — Comprehensive guide written for AI agents with rules, patterns, and full API reference
+- **[schema/](schema/)** — JSON Schema definitions for all options, events, methods, and types
+- **[mcp-server/](mcp-server/)** — MCP server exposing the SDK schemas for tool-using AI agents
+
+### MCP Server
+
+The MCP server provides two tools for AI agents:
+
+| Tool | Description |
+|------|-------------|
+| `jambonz_developer_toolkit` | Returns the full AGENTS.md guide + schema index |
+| `get_jambonz_schema` | Fetches a specific schema by name (e.g., `client-options`, `component:audio-device`) |
+
+```bash
+# Run locally (stdio mode for Claude Desktop / IDE)
+cd mcp-server && npm install && npm run build
+node dist/index.js
+
+# Run as HTTP server (for hosting)
+node dist/index.js --http 3000
+# → http://localhost:3000/mcp
+```
+
 ## Examples
 
 | Example | Location | Run |
@@ -316,6 +343,8 @@ packages/
   core/           @jambonz/client-sdk-core       — shared logic, JsSIP wrapper
   web/            @jambonz/client-sdk-web         — browser platform adapter
   react-native/   @jambonz/client-sdk-react-native — React Native adapter
+mcp-server/       @jambonz/webrtc-mcp-server     — MCP server for AI agents
+schema/           JSON Schema definitions for the SDK API
 examples/
   web/            React + Vite + Tailwind softphone demo
   react-native/   iOS + Android softphone demo

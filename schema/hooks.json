@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hooks",
+  "title": "React Hooks",
+  "description": "React hooks for declarative SDK integration. Available from both @jambonz/client-sdk-web and @jambonz/client-sdk-react-native.",
+  "type": "object",
+  "properties": {
+    "useJambonzClient": {
+      "description": "Hook that manages JambonzClient lifecycle. Does NOT auto-connect — call connect() explicitly. Does NOT auto-disconnect on unmount — add your own cleanup effect.",
+      "parameters": [
+        {
+          "name": "options",
+          "type": "JambonzClientOptions",
+          "required": true,
+          "description": "Client options. IMPORTANT: Must be a stable reference (useMemo) to prevent reconnection loops."
+        }
+      ],
+      "returns": {
+        "type": "object",
+        "properties": {
+          "client": { "type": "JambonzClient | null", "description": "Client instance (null before first connect)" },
+          "state": { "type": "ClientState", "description": "Current connection/registration state" },
+          "isRegistered": { "type": "boolean", "description": "Whether SIP registration is active" },
+          "isConnecting": { "type": "boolean", "description": "True during connecting or reconnecting states" },
+          "connect": { "type": "() => Promise<void>", "description": "Connect and register. Stable across renders." },
+          "disconnect": { "type": "() => void", "description": "Disconnect and clean up. Stable across renders." },
+          "error": { "type": "string | null", "description": "Last error message, or null" }
+        }
+      }
+    },
+    "useCall": {
+      "description": "Hook that manages a single call's lifecycle. Automatically listens for incoming calls on the client. Resets state after a call ends.",
+      "parameters": [
+        {
+          "name": "client",
+          "type": "JambonzClient | null",
+          "required": true,
+          "description": "The client from useJambonzClient. Pass null before connection."
+        }
+      ],
+      "returns": {
+        "type": "object",
+        "properties": {
+          "call": { "type": "JambonzCall | null", "description": "Active call instance, or null when idle" },
+          "state": { "type": "CallState | null", "description": "Current call state, or null" },
+          "isMuted": { "type": "boolean", "description": "Microphone mute status" },
+          "isHeld": { "type": "boolean", "description": "Call hold status" },
+          "isActive": { "type": "boolean", "description": "True when a call is in progress (not idle/ended)" },
+          "incomingCaller": { "type": "string | null", "description": "Remote identity of incoming call, or null" },
+          "makeCall": { "type": "(target: string, options?: JambonzCallOptions) => void", "description": "Start an outbound call" },
+          "answerIncoming": { "type": "() => void", "description": "Answer the pending incoming call" },
+          "declineIncoming": { "type": "() => void", "description": "Decline the pending incoming call (sends hangup)" },
+          "hangup": { "type": "() => void", "description": "End the active call" },
+          "toggleMute": { "type": "() => void", "description": "Toggle microphone mute" },
+          "toggleHold": { "type": "() => void", "description": "Toggle call hold" },
+          "sendDtmf": { "type": "(tone: string) => void", "description": "Send a single DTMF tone" },
+          "transfer": { "type": "(target: string) => void", "description": "Blind transfer the call" }
+        }
+      }
+    }
+  }
+}

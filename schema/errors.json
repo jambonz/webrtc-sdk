@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "errors",
+  "title": "SDK Error Classes",
+  "description": "Error classes thrown by the jambonz WebRTC client SDK",
+  "type": "object",
+  "properties": {
+    "JambonzError": {
+      "description": "Base error class for all SDK errors. Extends Error.",
+      "properties": {
+        "message": { "type": "string" }
+      }
+    },
+    "RegistrationError": {
+      "description": "Thrown when SIP registration fails (wrong credentials, SBC unreachable, etc.). Extends JambonzError.",
+      "properties": {
+        "message": { "type": "string" },
+        "code": { "type": "number", "description": "SIP response code (e.g., 401 Unauthorized, 403 Forbidden)" }
+      }
+    },
+    "CallError": {
+      "description": "Thrown when a call operation fails. Extends JambonzError.",
+      "properties": {
+        "message": { "type": "string" },
+        "code": { "type": "number", "description": "SIP response code" },
+        "reason": { "type": "string", "description": "Human-readable reason" }
+      }
+    },
+    "ConnectionError": {
+      "description": "Thrown when the WebSocket connection to the SBC fails. Extends JambonzError.",
+      "properties": {
+        "message": { "type": "string" }
+      }
+    }
+  }
+}

@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "client-events",
+  "title": "JambonzClient Events",
+  "description": "Events emitted by JambonzClient. Subscribe with client.on(event, listener)",
+  "type": "object",
+  "properties": {
+    "registered": {
+      "type": "object",
+      "description": "SIP registration succeeded. Safe to make calls after this event",
+      "properties": {
+        "listener": { "const": "() => void" }
+      }
+    },
+    "unregistered": {
+      "type": "object",
+      "description": "SIP registration was removed (after unregister() or disconnect())",
+      "properties": {
+        "listener": { "const": "() => void" }
+      }
+    },
+    "registrationFailed": {
+      "type": "object",
+      "description": "SIP registration failed. Check error for details (wrong credentials, SBC unreachable, etc.)",
+      "properties": {
+        "listener": { "const": "(error: Error) => void" },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "error": { "type": "object", "description": "Error with message describing the failure" }
+          }
+        }
+      }
+    },
+    "incoming": {
+      "type": "object",
+      "description": "Incoming call received. Call answer() to accept or hangup() to decline",
+      "properties": {
+        "listener": { "const": "(call: JambonzCall) => void" },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "call": { "description": "The incoming JambonzCall instance. Check call.remoteIdentity for caller ID" }
+          }
+        }
+      }
+    },
+    "stateChanged": {
+      "type": "object",
+      "description": "Client state transition occurred",
+      "properties": {
+        "listener": { "const": "(state: ClientState) => void" },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "state": {
+              "type": "string",
+              "enum": ["disconnected", "connecting", "connected", "registered", "reconnecting", "unregistered", "error"]
+            }
+          }
+        }
+      }
+    },
+    "connected": {
+      "type": "object",
+      "description": "WebSocket connection to SBC established",
+      "properties": {
+        "listener": { "const": "() => void" }
+      }
+    },
+    "disconnected": {
+      "type": "object",
+      "description": "WebSocket connection to SBC closed",
+      "properties": {
+        "listener": { "const": "() => void" }
+      }
+    },
+    "message": {
+      "type": "object",
+      "description": "SIP MESSAGE received (text messaging)",
+      "properties": {
+        "listener": { "const": "({ from, body, contentType }) => void" },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "from": { "type": "string", "description": "SIP URI of the sender" },
+            "body": { "type": "string", "description": "Message content" },
+            "contentType": { "type": "string", "description": "MIME type (e.g., text/plain)" }
+          }
+        }
+      }
+    },
+    "error": {
+      "type": "object",
+      "description": "Runtime error occurred (after connection established)",
+      "properties": {
+        "listener": { "const": "(error: Error) => void" }
+      }
+    }
+  }
+}

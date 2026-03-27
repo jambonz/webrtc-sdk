@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "audio-manager-methods",
+  "title": "JambonzAudioManager Methods",
+  "description": "Methods for audio device management. Web: full device enumeration and output switching. React Native: speaker/earpiece toggle only.",
+  "type": "object",
+  "properties": {
+    "enumerateDevices": {
+      "description": "List all available audio devices (microphones and speakers).",
+      "parameters": [],
+      "returns": "Promise<AudioDevice[]>"
+    },
+    "getMicrophones": {
+      "description": "List available microphone (input) devices.",
+      "parameters": [],
+      "returns": "Promise<AudioDevice[]>"
+    },
+    "getSpeakers": {
+      "description": "List available speaker (output) devices.",
+      "parameters": [],
+      "returns": "Promise<AudioDevice[]>"
+    },
+    "setOutputDevice": {
+      "description": "Set the audio output device. Web: pass a deviceId from getSpeakers(). React Native: pass 'speaker' or 'earpiece'. Returns false if not supported.",
+      "parameters": [
+        { "name": "deviceId", "type": "string", "required": true, "description": "Device ID (web) or 'speaker'/'earpiece' (React Native)" }
+      ],
+      "returns": "Promise<boolean>"
+    }
+  }
+}

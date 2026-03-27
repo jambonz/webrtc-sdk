@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "client-methods",
+  "title": "JambonzClient Methods",
+  "description": "Methods available on JambonzClient instances",
+  "type": "object",
+  "properties": {
+    "connect": {
+      "description": "Connect to the jambonz SBC via WebSocket and register as a SIP endpoint. Resolves when registered (if autoRegister is true) or connected. Throws ConnectionError or RegistrationError on failure.",
+      "parameters": [],
+      "returns": "Promise<void>"
+    },
+    "disconnect": {
+      "description": "Disconnect from the SBC, unregister SIP, and clean up all resources. Call this on component unmount or page unload.",
+      "parameters": [],
+      "returns": "void"
+    },
+    "register": {
+      "description": "Manually send SIP REGISTER. Only needed when autoRegister is false.",
+      "parameters": [],
+      "returns": "void"
+    },
+    "unregister": {
+      "description": "Remove SIP registration without disconnecting the WebSocket.",
+      "parameters": [],
+      "returns": "void"
+    },
+    "call": {
+      "description": "Make an outbound call to a phone number or SIP URI. Returns the JambonzCall instance immediately (before the call connects).",
+      "parameters": [
+        { "name": "target", "type": "string", "required": true, "description": "Phone number (e.g., '+15551234567') or SIP URI (e.g., 'sip:user@domain.com')" },
+        { "name": "options", "type": "JambonzCallOptions", "required": false, "description": "Call options (headers, codecs, recording, etc.)" }
+      ],
+      "returns": "JambonzCall"
+    },
+    "callUser": {
+      "description": "Call another registered SIP user by username.",
+      "parameters": [
+        { "name": "username", "type": "string", "required": true, "description": "SIP username of the target user" },
+        { "name": "options", "type": "JambonzCallOptions", "required": false }
+      ],
+      "returns": "JambonzCall"
+    },
+    "callQueue": {
+      "description": "Join a call queue. Internally dials 'queue-{name}'.",
+      "parameters": [
+        { "name": "queueName", "type": "string", "required": true, "description": "Name of the queue to join" },
+        { "name": "options", "type": "JambonzCallOptions", "required": false }
+      ],
+      "returns": "JambonzCall"
+    },
+    "callConference": {
+      "description": "Join a conference room. Internally dials 'conference-{name}'.",
+      "parameters": [
+        { "name": "conferenceName", "type": "string", "required": true, "description": "Name of the conference to join" },
+        { "name": "options", "type": "JambonzCallOptions", "required": false }
+      ],
+      "returns": "JambonzCall"
+    },
+    "callApplication": {
+      "description": "Call a jambonz application by its SID. Sets X-Application-Sid header on the INVITE.",
+      "parameters": [
+        { "name": "applicationSid", "type": "string", "required": true, "description": "The jambonz application SID" },
+        { "name": "options", "type": "JambonzCallOptions", "required": false }
+      ],
+      "returns": "JambonzCall"
+    },
+    "sendMessage": {
+      "description": "Send a SIP MESSAGE (text message) to a target.",
+      "parameters": [
+        { "name": "target", "type": "string", "required": true, "description": "SIP URI or phone number of the recipient" },
+        { "name": "body", "type": "string", "required": true, "description": "Message content" },
+        { "name": "contentType", "type": "string", "required": false, "description": "MIME type (default: 'text/plain')" }
+      ],
+      "returns": "void"
+    }
+  }
+}

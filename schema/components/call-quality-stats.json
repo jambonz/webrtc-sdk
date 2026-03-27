@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "call-quality-stats",
+  "title": "CallQualityStats",
+  "description": "Real-time call quality metrics collected from WebRTC RTCPeerConnection stats",
+  "type": "object",
+  "properties": {
+    "roundTripTime": {
+      "type": "number",
+      "description": "Round-trip time in milliseconds"
+    },
+    "jitter": {
+      "type": "number",
+      "description": "Jitter in milliseconds"
+    },
+    "packetLoss": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Packet loss as a fraction from 0.0 (no loss) to 1.0 (total loss)"
+    },
+    "packetsSent": {
+      "type": "integer",
+      "description": "Total number of RTP packets sent"
+    },
+    "packetsReceived": {
+      "type": "integer",
+      "description": "Total number of RTP packets received"
+    },
+    "packetsLost": {
+      "type": "integer",
+      "description": "Total number of RTP packets lost"
+    },
+    "codec": {
+      "type": "string",
+      "description": "Active audio codec name (e.g., 'opus', 'PCMU')"
+    },
+    "timestamp": {
+      "type": "number",
+      "description": "Measurement timestamp (milliseconds since epoch)"
+    }
+  },
+  "required": ["roundTripTime", "jitter", "packetLoss", "packetsSent", "packetsReceived", "packetsLost", "codec", "timestamp"]
+}

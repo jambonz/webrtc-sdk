@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "client-options",
+  "title": "JambonzClientOptions",
+  "description": "Options for creating a JambonzClient instance via createJambonzClient()",
+  "type": "object",
+  "required": ["server", "username", "password"],
+  "properties": {
+    "server": {
+      "type": "string",
+      "description": "WebSocket URL of the jambonz SBC (e.g., wss://sbc.example.com:8443)",
+      "pattern": "^wss?://"
+    },
+    "username": {
+      "type": "string",
+      "description": "SIP username for registration"
+    },
+    "password": {
+      "type": "string",
+      "description": "SIP password for authentication"
+    },
+    "displayName": {
+      "type": "string",
+      "description": "Display name included in SIP From header"
+    },
+    "realm": {
+      "type": "string",
+      "description": "SIP realm/domain for authentication. Defaults to the hostname extracted from server URL"
+    },
+    "registerHeaders": {
+      "type": "object",
+      "additionalProperties": { "type": "string" },
+      "description": "Custom SIP headers sent with REGISTER requests"
+    },
+    "autoRegister": {
+      "type": "boolean",
+      "default": true,
+      "description": "Automatically send SIP REGISTER on connect. Set to false for manual registration"
+    },
+    "registerExpires": {
+      "type": "number",
+      "default": 300,
+      "description": "Registration TTL in seconds"
+    },
+    "userAgent": {
+      "type": "string",
+      "description": "Custom SIP User-Agent header value"
+    }
+  },
+  "additionalProperties": false
+}

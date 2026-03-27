@@ -263,8 +263,9 @@ export class JambonzCall {
     });
 
     this.session.on('ended', (data: EndEvent) => {
+      const msg = data.message;
       const cause: CallEndCause = {
-        code: 0,
+        code: msg && 'status_code' in msg ? (msg as { status_code: number }).status_code : 0,
         reason: data.cause,
       };
       this.handleEnd();
@@ -272,8 +273,9 @@ export class JambonzCall {
     });
 
     this.session.on('failed', (data: EndEvent) => {
+      const msg = data.message;
       const cause: CallEndCause = {
-        code: 0,
+        code: msg && 'status_code' in msg ? (msg as { status_code: number }).status_code : 0,
         reason: data.cause,
       };
       this.handleEnd();

@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "call-events",
+  "title": "JambonzCall Events",
+  "description": "Events emitted by JambonzCall. Subscribe with call.on(event, listener)",
+  "type": "object",
+  "properties": {
+    "accepted": {
+      "type": "object",
+      "description": "Call was answered (200 OK received for outbound, or answer() called for inbound)",
+      "properties": {
+        "listener": { "const": "() => void" }
+      }
+    },
+    "progress": {
+      "type": "object",
+      "description": "Call is ringing at the remote end (180 Ringing or 183 Session Progress)",
+      "properties": {
+        "listener": { "const": "() => void" }
+      }
+    },
+    "ended": {
+      "type": "object",
+      "description": "Call ended normally (BYE sent/received). Only fires for calls that were connected",
+      "properties": {
+        "listener": { "const": "(cause: CallEndCause) => void" },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "cause": {
+              "type": "object",
+              "properties": {
+                "code": { "type": "number", "description": "SIP response code" },
+                "reason": { "type": "string", "description": "Human-readable reason" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "failed": {
+      "type": "object",
+      "description": "Call failed to connect (reject, timeout, network error). Fires instead of 'ended' when call never connected",
+      "properties": {
+        "listener": { "const": "(cause: CallEndCause) => void" },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "cause": {
+              "type": "object",
+              "properties": {
+                "code": { "type": "number", "description": "SIP response code (e.g., 486 Busy, 408 Timeout)" },
+                "reason": { "type": "string", "description": "Human-readable reason" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "stateChanged": {
+      "type": "object",
+      "description": "Call state transition occurred",
+      "properties": {
+        "listener": { "const": "(state: CallState) => void" },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "state": {
+              "type": "string",
+              "enum": ["idle", "ringing", "connecting", "connected", "held", "ended"]
+            }
+          }
+        }
+      }
+    },
+    "hold": {
+      "type": "object",
+      "description": "Hold state changed (hold() or unhold() was called)",
+      "properties": {
+        "listener": { "const": "(held: boolean) => void" }
+      }
+    },
+    "mute": {
+      "type": "object",
+      "description": "Mute state changed (mute(), unmute(), or toggleMute() was called)",
+      "properties": {
+        "listener": { "const": "(muted: boolean) => void" }
+      }
+    },
+    "dtmf": {
+      "type": "object",
+      "description": "DTMF tone received from the remote party",
+      "properties": {
+        "listener": { "const": "(tone: string) => void" },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "tone": { "type": "string", "pattern": "^[0-9A-D#*]$" }
+          }
+        }
+      }
+    },
+    "transferred": {
+      "type": "object",
+      "description": "Call transfer (REFER) completed successfully",
+      "properties": {
+        "listener": { "const": "() => void" }
+      }
+    },
+    "transferFailed": {
+      "type": "object",
+      "description": "Call transfer (REFER) failed",
+      "properties": {
+        "listener": { "const": "(error: Error) => void" }
+      }
+    },
+    "qualityStats": {
+      "type": "object",
+      "description": "Call quality metrics received (from startQualityMonitoring or getStats)",
+      "properties": {
+        "listener": { "const": "(stats: CallQualityStats) => void" },
+        "payload": { "$ref": "components/call-quality-stats.json" }
+      }
+    }
+  }
+}

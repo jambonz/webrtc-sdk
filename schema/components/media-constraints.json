@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "media-constraints",
+  "title": "MediaStreamConstraints",
+  "description": "Constraints for getUserMedia — controls audio and video capture",
+  "type": "object",
+  "properties": {
+    "audio": {
+      "oneOf": [
+        { "type": "boolean" },
+        {
+          "type": "object",
+          "properties": {
+            "deviceId": {
+              "type": "string",
+              "description": "Specific microphone device ID from getMicrophones()"
+            },
+            "echoCancellation": {
+              "type": "boolean",
+              "description": "Enable acoustic echo cancellation"
+            },
+            "noiseSuppression": {
+              "type": "boolean",
+              "description": "Enable noise suppression"
+            },
+            "autoGainControl": {
+              "type": "boolean",
+              "description": "Enable automatic gain control"
+            }
+          }
+        }
+      ],
+      "description": "Audio capture constraints. true for default mic, or an object for specific settings"
+    },
+    "video": {
+      "type": "boolean",
+      "description": "Enable video capture (not typically used for voice calls)"
+    }
+  }
+}

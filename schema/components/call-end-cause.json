@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "call-end-cause",
+  "title": "CallEndCause",
+  "description": "Information about why a call ended, passed to 'ended' and 'failed' event handlers",
+  "type": "object",
+  "properties": {
+    "code": {
+      "type": "number",
+      "description": "SIP response code (e.g., 200 for normal, 486 for busy, 408 for timeout, 603 for declined)"
+    },
+    "reason": {
+      "type": "string",
+      "description": "Human-readable reason for call end"
+    }
+  },
+  "required": ["code", "reason"]
+}

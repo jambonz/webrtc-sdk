@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "call-options",
+  "title": "JambonzCallOptions",
+  "description": "Options passed when making an outbound call via client.call(), callUser(), callQueue(), etc.",
+  "type": "object",
+  "properties": {
+    "headers": {
+      "type": "object",
+      "additionalProperties": { "type": "string" },
+      "description": "Custom SIP headers included in the INVITE request"
+    },
+    "mediaConstraints": {
+      "$ref": "components/media-constraints.json",
+      "description": "MediaStream constraints for getUserMedia"
+    },
+    "pcConfig": {
+      "type": "object",
+      "properties": {
+        "iceServers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "urls": {
+                "oneOf": [
+                  { "type": "string" },
+                  { "type": "array", "items": { "type": "string" } }
+                ]
+              },
+              "username": { "type": "string" },
+              "credential": { "type": "string" }
+            },
+            "required": ["urls"]
+          }
+        }
+      },
+      "description": "RTCPeerConnection configuration (ICE servers, etc.)"
+    },
+    "noAnswerTimeout": {
+      "type": "number",
+      "description": "Automatically hang up if the call is not answered within this many seconds"
+    },
+    "preferredCodecs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Codec priority list (e.g., ['opus', 'PCMU']). First codec is preferred",
+      "examples": [["opus", "PCMU"], ["PCMU"]]
+    },
+    "record": {
+      "type": "boolean",
+      "default": false,
+      "description": "Enable server-side recording via X-Record-Call SIP header"
+    }
+  },
+  "additionalProperties": false
+}

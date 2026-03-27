@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "enums",
+  "title": "SDK Enums",
+  "description": "Enumeration types used throughout the jambonz WebRTC client SDK",
+  "type": "object",
+  "properties": {
+    "ClientState": {
+      "type": "string",
+      "enum": ["disconnected", "connecting", "connected", "registered", "reconnecting", "unregistered", "error"],
+      "description": "Possible states of a JambonzClient instance. Lifecycle: disconnected → connecting → connected → registered. On error: reconnecting or error."
+    },
+    "CallState": {
+      "type": "string",
+      "enum": ["idle", "ringing", "connecting", "connected", "held", "ended"],
+      "description": "Possible states of a JambonzCall instance. Outbound: idle → connecting → (ringing) → connected → ended. Inbound: idle → ringing → connected → ended."
+    },
+    "CallDirection": {
+      "type": "string",
+      "enum": ["inbound", "outbound"],
+      "description": "Direction of a call. Inbound = received via 'incoming' event. Outbound = initiated via call() methods."
+    }
+  }
+}

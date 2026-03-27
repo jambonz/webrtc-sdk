@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "call-methods",
+  "title": "JambonzCall Methods",
+  "description": "Methods available on JambonzCall instances",
+  "type": "object",
+  "properties": {
+    "answer": {
+      "description": "Answer an incoming call. Only valid for inbound calls in 'ringing' state.",
+      "parameters": [],
+      "returns": "void"
+    },
+    "hangup": {
+      "description": "End the call. Sends SIP BYE (connected) or CANCEL (connecting).",
+      "parameters": [],
+      "returns": "void"
+    },
+    "hold": {
+      "description": "Put the call on hold. Sends re-INVITE with sendonly SDP. Call must be in 'connected' state.",
+      "parameters": [],
+      "returns": "void"
+    },
+    "unhold": {
+      "description": "Resume a held call. Sends re-INVITE with sendrecv SDP.",
+      "parameters": [],
+      "returns": "void"
+    },
+    "mute": {
+      "description": "Mute the microphone. Local operation only — no SIP signaling.",
+      "parameters": [],
+      "returns": "void"
+    },
+    "unmute": {
+      "description": "Unmute the microphone.",
+      "parameters": [],
+      "returns": "void"
+    },
+    "toggleMute": {
+      "description": "Toggle between muted and unmuted states.",
+      "parameters": [],
+      "returns": "void"
+    },
+    "sendDTMF": {
+      "description": "Send a DTMF tone to the remote party.",
+      "parameters": [
+        { "name": "tone", "type": "string", "required": true, "description": "Single DTMF character: 0-9, A-D, #, or *" }
+      ],
+      "returns": "void"
+    },
+    "transfer": {
+      "description": "Blind transfer the call to another target via SIP REFER. The local call ends after transfer.",
+      "parameters": [
+        { "name": "target", "type": "string", "required": true, "description": "Transfer target (phone number or SIP URI)" },
+        { "name": "options", "type": "{ headers?: Record<string, string> }", "required": false }
+      ],
+      "returns": "void"
+    },
+    "attendedTransfer": {
+      "description": "Attended transfer — connect the remote party of this call with the remote party of another active call. Both calls must be connected.",
+      "parameters": [
+        { "name": "otherCall", "type": "JambonzCall", "required": true, "description": "The other active call to bridge with" },
+        { "name": "options", "type": "{ headers?: Record<string, string> }", "required": false }
+      ],
+      "returns": "void"
+    },
+    "getStats": {
+      "description": "Get a one-time snapshot of call quality metrics from the WebRTC peer connection.",
+      "parameters": [],
+      "returns": "Promise<CallQualityStats | null>"
+    },
+    "startQualityMonitoring": {
+      "description": "Start periodic call quality monitoring. Emits 'qualityStats' events at the specified interval.",
+      "parameters": [
+        { "name": "intervalMs", "type": "number", "required": false, "description": "Polling interval in milliseconds (default: 2000)" }
+      ],
+      "returns": "void"
+    },
+    "stopQualityMonitoring": {
+      "description": "Stop periodic call quality monitoring.",
+      "parameters": [],
+      "returns": "void"
+    }
+  }
+}

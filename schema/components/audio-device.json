@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "audio-device",
+  "title": "AudioDevice",
+  "description": "Represents an audio input (microphone) or output (speaker) device",
+  "type": "object",
+  "properties": {
+    "deviceId": {
+      "type": "string",
+      "description": "Unique device identifier. Pass to mediaConstraints.audio.deviceId or setOutputDevice()"
+    },
+    "label": {
+      "type": "string",
+      "description": "Human-readable device name (e.g., 'Built-in Microphone')"
+    },
+    "kind": {
+      "type": "string",
+      "enum": ["audioinput", "audiooutput"],
+      "description": "Device type — audioinput for microphones, audiooutput for speakers"
+    }
+  },
+  "required": ["deviceId", "label", "kind"]
+}
