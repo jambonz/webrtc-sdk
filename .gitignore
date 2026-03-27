@@ -13,15 +13,9 @@ test-results/
 playwright-report/
 .env.test
 
-# Android build
-examples/react-native/android/build/
-examples/react-native/android/app/build/
-examples/react-native/android/app/.cxx/
-examples/react-native/android/.gradle/
-
-# iOS build
-examples/react-native/ios/Pods/
-examples/react-native/ios/build/
+# React Native native projects (generated per-machine)
+examples/react-native/android/
+examples/react-native/ios/
 
 # Web example build
 examples/web/dist/

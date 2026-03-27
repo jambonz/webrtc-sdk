@@ -12,8 +12,8 @@ A softphone example app using `@jambonz/client-sdk-react-native` for both iOS an
 
 - Node.js >= 18
 - [React Native development environment](https://reactnative.dev/docs/set-up-your-environment)
-- **Android**: Android Studio, Android SDK, JDK 17+, a **physical device** (WebRTC crashes on emulators)
-- **iOS**: Xcode 15+, CocoaPods, a **physical iPhone** (WebRTC does not work in the iOS simulator)
+- **Android**: Android Studio, Android SDK, JDK 17+, emulator or physical device
+- **iOS**: Xcode 15+, CocoaPods, simulator or physical device (physical recommended for real calls)
 
 ## Setup
 
@@ -28,6 +28,29 @@ npm run build
 # 2. Install example dependencies
 cd examples/react-native
 npm install
+
+# 3. Generate the native android/ and ios/ projects
+npx @react-native-community/cli init JambonzExample --directory /tmp/JambonzExample --skip-install
+cp -r /tmp/JambonzExample/android ./android
+cp -r /tmp/JambonzExample/ios ./ios
+rm -rf /tmp/JambonzExample
+```
+
+After generating, you need to add permissions:
+
+**Android** — add to `android/app/src/main/AndroidManifest.xml` inside `<manifest>`:
+```xml
+<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+<uses-permission android:name="android.permission.RECORD_AUDIO" />
+<uses-permission android:name="android.permission.CAMERA" />
+<uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+```
+
+**iOS** — add to `ios/JambonzExample/Info.plist` before `</dict>`:
+```xml
+<key>NSMicrophoneUsageDescription</key>
+<string>Required for voice calls</string>
 ```
 
 ## Android
