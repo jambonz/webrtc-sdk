@@ -28,15 +28,26 @@ npm run build
 # 2. Install example dependencies
 cd examples/react-native
 npm install
+```
 
-# 3. Generate the native android/ and ios/ projects
-npx @react-native-community/cli init JambonzExample --directory /tmp/JambonzExample --skip-install
+## Generate Native Projects
+
+The `android/` and `ios/` folders are **not checked into git** — they are generated per-machine. Run these steps after cloning or whenever you need a fresh native project.
+
+### Step 1: Generate the native code
+
+```bash
+cd examples/react-native
+
+npx @react-native-community/cli init JambonzExample \
+  --directory /tmp/JambonzExample --skip-install
+
 cp -r /tmp/JambonzExample/android ./android
 cp -r /tmp/JambonzExample/ios ./ios
 rm -rf /tmp/JambonzExample
 ```
 
-After generating, you need to add permissions:
+### Step 2: Add required permissions
 
 **Android** — add to `android/app/src/main/AndroidManifest.xml` inside `<manifest>`:
 ```xml
@@ -53,9 +64,15 @@ After generating, you need to add permissions:
 <string>Required for voice calls</string>
 ```
 
-## Android
+### Step 3: Install iOS native dependencies
 
-### First-time setup
+```bash
+cd ios && pod install && cd ..
+```
+
+## Running on Android
+
+### Prerequisites
 
 ```bash
 # Install JDK 17 if you don't have it
@@ -63,75 +80,67 @@ brew install --cask zulu@17
 export JAVA_HOME=$(/usr/libexec/java_home -v 17)
 ```
 
-### Run on a physical device
+### Run on Android Emulator
 
-1. Enable **USB Debugging** on your phone (Settings → Developer Options)
-2. Connect your phone via USB
-3. Verify: `adb devices` should show your device
+1. Open **Android Studio** → Virtual Device Manager → create/start an emulator
+2. Run:
 
 ```bash
 # Terminal 1: Start Metro
 npx react-native start
 
-# Terminal 2: Build and run
+# Terminal 2: Build and launch on emulator
 npx react-native run-android
 ```
 
-### Permissions (already configured)
+### Run on a physical Android device
 
-The following permissions are set in `android/app/src/main/AndroidManifest.xml`:
+1. Enable **USB Debugging** on your phone (Settings → Developer Options)
+2. Connect your phone via USB
+3. Verify: `adb devices` should show your device
+4. Run the same commands as above — it will target the physical device automatically
 
-- `INTERNET` — WebSocket connection
-- `ACCESS_NETWORK_STATE` — WebRTC network monitor
-- `CAMERA` — required by react-native-webrtc
-- `RECORD_AUDIO` — microphone access
-- `MODIFY_AUDIO_SETTINGS` — audio routing
+## Running on iOS
 
-## iOS
-
-### First-time setup
+### Prerequisites
 
 ```bash
 # Install CocoaPods if needed
 brew install ruby  # Need Ruby 3.x for CocoaPods
 gem install cocoapods
-
-# Install native dependencies
-cd ios && pod install && cd ..
 ```
 
-### Configure signing in Xcode
-
-```bash
-open ios/JambonzExample.xcworkspace
-```
-
-1. Select the **JambonzExample** target
-2. Go to **Signing & Capabilities** tab
-3. Check **Automatically manage signing**
-4. Select your **Team** (your Apple ID)
-5. Change **Bundle Identifier** to something unique (e.g. `com.yourname.jambonzexample`)
-
-### Run on a physical iPhone
-
-1. Connect your iPhone via USB
-2. Tap **Trust** on the phone when prompted
-3. Enable **Developer Mode** (iOS 16+): Settings → Privacy & Security → Developer Mode
+### Run on iOS Simulator
 
 ```bash
 # Terminal 1: Start Metro
 npx react-native start
 
-# Terminal 2: Build and run on device
-npx react-native run-ios --device
+# Terminal 2: Build and launch on simulator
+npx react-native run-ios
 
-# Or press Play in Xcode with your iPhone selected
+# To pick a specific simulator:
+npx react-native run-ios --simulator="iPhone 16 Pro"
 ```
 
-### Permissions (already configured)
+> **Note:** Microphone does not work on the iOS Simulator. Use a physical device for real calls.
 
-The microphone permission is set in `ios/JambonzExample/Info.plist`:
-- `NSMicrophoneUsageDescription` — "Required for voice calls"
+### Run on a physical iPhone
+
+1. Open the Xcode workspace to configure signing:
+   ```bash
+   open ios/JambonzExample.xcworkspace
+   ```
+2. Select the **JambonzExample** target → **Signing & Capabilities**
+3. Check **Automatically manage signing**, select your **Team** (Apple ID)
+4. Change **Bundle Identifier** to something unique (e.g. `com.yourname.jambonzexample`)
+5. Connect your iPhone via USB, tap **Trust** when prompted
+6. Enable **Developer Mode** (iOS 16+): Settings → Privacy & Security → Developer Mode
+7. Run:
+
+```bash
+npx react-native run-ios --device
+```
 
 ### Troubleshooting
 
