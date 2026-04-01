@@ -313,10 +313,10 @@ A hosted instance is available at `https://webrtc-mcp-server.jambonz.app/mcp`. T
 
 ```bash
 # Project-level
-claude mcp add jambonz-webrtc -t streamable-http https://webrtc-mcp-server.jambonz.app/mcp
+claude mcp add jambonz-webrtc -t http https://webrtc-mcp-server.jambonz.app/mcp
 
 # Global
-claude mcp add --scope user jambonz-webrtc -t streamable-http https://webrtc-mcp-server.jambonz.app/mcp
+claude mcp add --scope user jambonz-webrtc -t http https://webrtc-mcp-server.jambonz.app/mcp
 ```
 
 Or add to your project's `.mcp.json`:
@@ -325,7 +325,7 @@ Or add to your project's `.mcp.json`:
 {
   "mcpServers": {
     "jambonz-webrtc": {
-      "type": "streamable-http",
+      "type": "http",
       "url": "https://webrtc-mcp-server.jambonz.app/mcp"
     }
   }
