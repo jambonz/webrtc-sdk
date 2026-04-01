@@ -166,6 +166,7 @@ All call type methods accept the same optional `JambonzCallOptions` (custom head
 - **4 call types** — call users, queues, conferences, and applications
 - **Call control** — answer, hangup, hold/unhold, mute/unmute, DTMF
 - **Call transfer** — blind (`call.transfer(target)`) and attended (`call.attendedTransfer(otherCall)`)
+- **Noise isolation** — `call.enableNoiseIsolation()` / `call.disableNoiseIsolation()` (server-side)
 - **Call quality metrics** — `call.getStats()` and `call.startQualityMonitoring()`
 - **Audio device management** — enumerate mics/speakers, switch output device
 - **Codec preference** — `client.call(target, { preferredCodecs: ['opus'] })`
@@ -243,6 +244,8 @@ call.mute();
 call.unmute();
 call.toggleMute();
 call.sendDTMF(tone);
+call.enableNoiseIsolation(opts?);  // { vendor?, level?, model? }
+call.disableNoiseIsolation();
 call.transfer(target, options?);
 call.attendedTransfer(otherCall, options?);
 await call.getStats();
@@ -285,32 +288,173 @@ client.call(target, {
 });
 ```
 
-## For AI Agents
+## AI-Assisted Development
 
-This SDK is designed to be consumed by AI coding agents. See:
+The `@jambonz/webrtc-mcp-server` package is an [MCP (Model Context Protocol)](https://modelcontextprotocol.io) server that gives AI coding assistants — Claude, Cursor, GitHub Copilot, Windsurf, and others — deep knowledge of the jambonz WebRTC SDK APIs, events, and usage patterns. This means the AI can generate correct softphone application code without you having to manually explain the API.
 
-- **[AGENTS.md](AGENTS.md)** — Comprehensive guide written for AI agents with rules, patterns, and full API reference
-- **[schema/](schema/)** — JSON Schema definitions for all options, events, methods, and types
-- **[mcp-server/](mcp-server/)** — MCP server exposing the SDK schemas for tool-using AI agents
+### What it provides
 
-### MCP Server
+The MCP server exposes two tools to the AI:
 
-The MCP server provides two tools for AI agents:
+1. **`jambonz_developer_toolkit`** — A comprehensive developer guide covering the SDK API, call types, events, React hooks, and working code examples.
+2. **`get_jambonz_schema`** — Full JSON Schema for any SDK type (`client-options`, `call-options`, `client-events`, `call-events`, `component:audio-device`, etc.).
 
-| Tool | Description |
-|------|-------------|
-| `jambonz_developer_toolkit` | Returns the full AGENTS.md guide + schema index |
-| `get_jambonz_schema` | Fetches a specific schema by name (e.g., `client-options`, `component:audio-device`) |
+When you ask the AI to build a softphone or WebRTC application, it calls these tools automatically to get the context it needs.
+
+### Setup
+
+Choose the setup that matches your development environment. You only need one.
+
+#### Option A: Remote server (no install needed)
+
+A hosted instance is available at `https://webrtc-mcp-server.jambonz.app/mcp`. This is the simplest option — no local install or npx required.
+
+**Claude Code (CLI)**
 
 ```bash
-# Run locally (stdio mode for Claude Desktop / IDE)
-cd mcp-server && npm install && npm run build
-node dist/index.js
+# Project-level
+claude mcp add jambonz-webrtc -t streamable-http https://webrtc-mcp-server.jambonz.app/mcp
 
-# Run as HTTP server (for hosting)
-node dist/index.js --http 3000
-# → http://localhost:3000/mcp
+# Global
+claude mcp add --scope user jambonz-webrtc -t streamable-http https://webrtc-mcp-server.jambonz.app/mcp
 ```
+
+Or add to your project's `.mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "jambonz-webrtc": {
+      "type": "streamable-http",
+      "url": "https://webrtc-mcp-server.jambonz.app/mcp"
+    }
+  }
+}
+```
+
+**Cursor** — add to `.cursor/mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "jambonz-webrtc": {
+      "url": "https://webrtc-mcp-server.jambonz.app/mcp"
+    }
+  }
+}
+```
+
+**VS Code (GitHub Copilot / Claude Extension)** — add to `.vscode/mcp.json`:
+
+```json
+{
+  "servers": {
+    "jambonz-webrtc": {
+      "type": "http",
+      "url": "https://webrtc-mcp-server.jambonz.app/mcp"
+    }
+  }
+}
+```
+
+**Windsurf** — open **Windsurf Settings > MCP** and add:
+
+```json
+{
+  "mcpServers": {
+    "jambonz-webrtc": {
+      "serverUrl": "https://webrtc-mcp-server.jambonz.app/mcp"
+    }
+  }
+}
+```
+
+#### Option B: Local via npx
+
+Run the MCP server locally using npx. This uses stdio transport and requires no network access.
+
+**Claude Code (CLI)**
+
+```bash
+# Project-level
+claude mcp add jambonz-webrtc -- npx -y @jambonz/webrtc-mcp-server
+
+# Global
+claude mcp add --scope user jambonz-webrtc -- npx -y @jambonz/webrtc-mcp-server
+```
+
+Or add to your project's `.mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "jambonz-webrtc": {
+      "command": "npx",
+      "args": ["-y", "@jambonz/webrtc-mcp-server"]
+    }
+  }
+}
+```
+
+**Claude Desktop** — open **Settings > Developer > Edit Config** and add to `mcpServers`:
+
+```json
+{
+  "mcpServers": {
+    "jambonz-webrtc": {
+      "command": "npx",
+      "args": ["-y", "@jambonz/webrtc-mcp-server"]
+    }
+  }
+}
+```
+
+**Cursor** — add to `.cursor/mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "jambonz-webrtc": {
+      "command": "npx",
+      "args": ["-y", "@jambonz/webrtc-mcp-server"]
+    }
+  }
+}
+```
+
+**VS Code (GitHub Copilot / Claude Extension)** — add to `.vscode/mcp.json`:
+
+```json
+{
+  "servers": {
+    "jambonz-webrtc": {
+      "command": "npx",
+      "args": ["-y", "@jambonz/webrtc-mcp-server"]
+    }
+  }
+}
+```
+
+**Windsurf** — open **Windsurf Settings > MCP** and add:
+
+```json
+{
+  "mcpServers": {
+    "jambonz-webrtc": {
+      "command": "npx",
+      "args": ["-y", "@jambonz/webrtc-mcp-server"]
+    }
+  }
+}
+```
+
+### Verifying it works
+
+After configuring the MCP server, start a new conversation with your AI assistant and ask it to build a softphone application. For example:
+
+> "Create a React softphone app using @jambonz/client-sdk-web that can register, make outbound calls, and handle incoming calls."
+
+The AI should automatically call the `jambonz_developer_toolkit` tool, then generate correct code using `createJambonzClient()`, proper event handling, and React hooks.
 
 ## Examples
 
@@ -335,6 +479,30 @@ npm run format
 cp .env.test.example .env.test  # Fill in your SBC credentials
 npm run test:web
 ```
+
+## Publishing to npm
+
+The SDK packages and MCP server are versioned and published independently. Each has its own GitHub Actions workflow triggered by a specific tag pattern.
+
+### Publishing the SDK packages
+
+```bash
+./scripts/publish.sh          # patch bump (default)
+./scripts/publish.sh minor    # minor bump
+./scripts/publish.sh major    # major bump
+```
+
+The script bumps all three packages (`core`, `web`, `react-native`) to the same version, updates cross-dependencies, commits, tags with `v{version}`, and pushes. The `v*` tag triggers `.github/workflows/publish.yml`.
+
+### Publishing `@jambonz/webrtc-mcp-server`
+
+```bash
+./scripts/publish-mcp.sh          # patch bump (default)
+./scripts/publish-mcp.sh minor    # minor bump
+./scripts/publish-mcp.sh major    # major bump
+```
+
+The script bumps the version, commits, tags with `mcp-v{version}`, and pushes. The `mcp-v*` tag triggers `.github/workflows/publish-mcp.yml`.
 
 ## Architecture
 
