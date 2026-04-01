@@ -1,6 +1,6 @@
 {
   "name": "@jambonz/client-sdk-react-native",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Jambonz WebRTC SDK for React Native (iOS + Android)",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -13,7 +13,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@jambonz/client-sdk-core": "0.1.2"
+    "@jambonz/client-sdk-core": "0.1.3"
   },
   "peerDependencies": {
     "react-native-webrtc": ">=124.0.0"
