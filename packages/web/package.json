@@ -1,6 +1,6 @@
 {
   "name": "@jambonz/client-sdk-web",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Jambonz WebRTC SDK for Web/React",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -14,7 +14,7 @@
     "test": "npx playwright test --config playwright.config.ts"
   },
   "dependencies": {
-    "@jambonz/client-sdk-core": "0.1.1"
+    "@jambonz/client-sdk-core": "0.1.2"
   },
   "devDependencies": {
     "@types/react": "^18.3.0",
