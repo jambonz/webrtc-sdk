@@ -1,7 +1,12 @@
 export { JambonzClient } from './JambonzClient';
 export { JambonzCall } from './JambonzCall';
 export { JambonzAudioManager } from './JambonzAudioManager';
-export { useJambonzClient, useCall, type UseJambonzClientReturn, type UseCallReturn } from './hooks';
+export {
+  useJambonzClient,
+  useCall,
+  type UseJambonzClientReturn,
+  type UseCallReturn,
+} from './hooks';
 
 export { CallQualityMonitor, type CallQualityStats } from './CallQualityMonitor';
 export { JambonzError, RegistrationError, CallError, ConnectionError } from './errors';

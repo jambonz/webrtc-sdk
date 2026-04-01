@@ -7,7 +7,12 @@ import type { ClientEventMap } from './events';
 import type { PlatformAdapter } from './platform';
 import { JambonzCall } from './JambonzCall';
 import { ConnectionError, RegistrationError } from './errors';
-import { CallState, ClientState, type JambonzCallOptions, type JambonzClientOptions } from './types';
+import {
+  CallState,
+  ClientState,
+  type JambonzCallOptions,
+  type JambonzClientOptions,
+} from './types';
 import { DEFAULT_USER_AGENT } from './version';
 
 type ClientEventName = keyof ClientEventMap;

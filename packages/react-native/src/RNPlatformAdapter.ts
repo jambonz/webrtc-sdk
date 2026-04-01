@@ -58,11 +58,7 @@ export class RNPlatformAdapter implements PlatformAdapter {
 
     // -- Patch addEventListener to track icecandidate listeners --
     const origAddEventListener = RTCPC.prototype.addEventListener;
-    RTCPC.prototype.addEventListener = function (
-      type: string,
-      listener: any,
-      ...rest: any[]
-    ) {
+    RTCPC.prototype.addEventListener = function (type: string, listener: any, ...rest: any[]) {
       if (type === 'icecandidate') {
         if (!this[LISTENERS_KEY]) this[LISTENERS_KEY] = [];
         this[LISTENERS_KEY].push(listener);
@@ -72,15 +68,9 @@ export class RNPlatformAdapter implements PlatformAdapter {
 
     // -- Patch removeEventListener to clean up tracked listeners --
     const origRemoveEventListener = RTCPC.prototype.removeEventListener;
-    RTCPC.prototype.removeEventListener = function (
-      type: string,
-      listener: any,
-      ...rest: any[]
-    ) {
+    RTCPC.prototype.removeEventListener = function (type: string, listener: any, ...rest: any[]) {
       if (type === 'icecandidate' && Array.isArray(this[LISTENERS_KEY])) {
-        this[LISTENERS_KEY] = this[LISTENERS_KEY].filter(
-          (l: any) => l !== listener,
-        );
+        this[LISTENERS_KEY] = this[LISTENERS_KEY].filter((l: any) => l !== listener);
       }
       return origRemoveEventListener.call(this, type, listener, ...rest);
     };

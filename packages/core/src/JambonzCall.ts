@@ -1,4 +1,10 @@
-import type { RTCSession, EndEvent, HoldEvent, IncomingDTMFEvent, OutgoingDTMFEvent } from 'jssip/lib/RTCSession';
+import type {
+  RTCSession,
+  EndEvent,
+  HoldEvent,
+  IncomingDTMFEvent,
+  OutgoingDTMFEvent,
+} from 'jssip/lib/RTCSession';
 import { EventEmitter } from 'events';
 import type { CallEventMap } from './events';
 import type { PlatformAdapter } from './platform';
@@ -207,10 +213,7 @@ export class JambonzCall {
 
   /** Send a jambonz command to the server via SIP INFO. */
   private sendJambonzCommand(command: string, data: Record<string, unknown>): void {
-    (this.session as any).sendInfo(
-      'application/x-jambonz+json',
-      JSON.stringify({ command, data })
-    );
+    (this.session as any).sendInfo('application/x-jambonz+json', JSON.stringify({ command, data }));
   }
 
   private buildHeaders(headers?: Record<string, string>): string[] {

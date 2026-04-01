@@ -26,7 +26,12 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import type { JambonzClient } from './JambonzClient';
 import type { JambonzCall } from './JambonzCall';
-import { CallState, ClientState, type JambonzClientOptions, type JambonzCallOptions } from './types';
+import {
+  CallState,
+  ClientState,
+  type JambonzClientOptions,
+  type JambonzCallOptions,
+} from './types';
 
 // ── useJambonzClient ────────────────────────────────────────
 
