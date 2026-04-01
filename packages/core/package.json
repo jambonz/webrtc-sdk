@@ -1,11 +1,13 @@
 {
   "name": "@jambonz/client-sdk-core",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Core logic for Jambonz WebRTC SDK",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup",
     "clean": "rm -rf dist"
@@ -32,7 +34,13 @@
     "url": "https://github.com/jambonz/jambonz-webrtc-sdk.git",
     "directory": "packages/core"
   },
-  "keywords": ["jambonz", "webrtc", "sip", "voip", "jssip"],
+  "keywords": [
+    "jambonz",
+    "webrtc",
+    "sip",
+    "voip",
+    "jssip"
+  ],
   "publishConfig": {
     "access": "public"
   }

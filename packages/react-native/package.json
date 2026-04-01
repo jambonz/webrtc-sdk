@@ -1,17 +1,19 @@
 {
   "name": "@jambonz/client-sdk-react-native",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Jambonz WebRTC SDK for React Native (iOS + Android)",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup",
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@jambonz/client-sdk-core": "0.1.0"
+    "@jambonz/client-sdk-core": "0.1.1"
   },
   "peerDependencies": {
     "react-native-webrtc": ">=124.0.0"
@@ -32,7 +34,15 @@
     "url": "https://github.com/jambonz/jambonz-webrtc-sdk.git",
     "directory": "packages/react-native"
   },
-  "keywords": ["jambonz", "webrtc", "sip", "voip", "react-native", "ios", "android"],
+  "keywords": [
+    "jambonz",
+    "webrtc",
+    "sip",
+    "voip",
+    "react-native",
+    "ios",
+    "android"
+  ],
   "publishConfig": {
     "access": "public"
   }
