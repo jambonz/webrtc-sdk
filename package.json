@@ -1,6 +1,7 @@
 {
   "name": "jambonz-webrtc-sdk",
   "private": true,
+  "type": "module",
   "workspaces": [
     "packages/*"
   ],
