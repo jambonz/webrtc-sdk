@@ -25,7 +25,9 @@ export interface JambonzCallOptions {
   /** MediaStream constraints for getUserMedia */
   mediaConstraints?: MediaStreamConstraints;
   /** RTCPeerConnection configuration (e.g. iceServers). Default: Google STUN server */
-  pcConfig?: { iceServers?: Array<{ urls: string | string[]; username?: string; credential?: string }> };
+  pcConfig?: {
+    iceServers?: Array<{ urls: string | string[]; username?: string; credential?: string }>;
+  };
   /**
    * Timeout in seconds to wait for the call to be answered.
    * If the remote party doesn't answer within this time, the call is automatically

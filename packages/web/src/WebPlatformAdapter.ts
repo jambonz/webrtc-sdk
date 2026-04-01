@@ -49,7 +49,9 @@ export class WebPlatformAdapter implements PlatformAdapter {
   async setOutputDevice(deviceId: string): Promise<void> {
     if (!this.audioElement) return;
     // setSinkId is available on most modern browsers
-    const el = this.audioElement as HTMLAudioElement & { setSinkId?: (id: string) => Promise<void> };
+    const el = this.audioElement as HTMLAudioElement & {
+      setSinkId?: (id: string) => Promise<void>;
+    };
     if (typeof el.setSinkId === 'function') {
       await el.setSinkId(deviceId);
     }
@@ -83,7 +85,10 @@ export class WebPlatformAdapter implements PlatformAdapter {
       pulse();
       // Re-schedule every 6s
       const interval = setInterval(() => {
-        if (!this.toneContext) { clearInterval(interval); return; }
+        if (!this.toneContext) {
+          clearInterval(interval);
+          return;
+        }
         pulse();
       }, 6000);
     }
@@ -91,7 +96,11 @@ export class WebPlatformAdapter implements PlatformAdapter {
 
   stopTone(): void {
     if (this.toneOscillator) {
-      try { this.toneOscillator.stop(); } catch { /* already stopped */ }
+      try {
+        this.toneOscillator.stop();
+      } catch {
+        /* already stopped */
+      }
       this.toneOscillator = null;
     }
     if (this.toneContext) {
