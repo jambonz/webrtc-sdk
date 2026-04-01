@@ -1,10 +1,54 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
-import { join, basename, resolve } from 'node:path';
+import { join, basename, resolve, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const ROOT = resolve(import.meta.dirname, '../..');
-const SCHEMA_DIR = join(ROOT, 'schema');
-const AGENTS_MD = join(ROOT, 'AGENTS.md');
+/** Locate the schema directory. Checks:
+ *  1. Bundled in npm package: mcp-server/schema/ (copied by prepack)
+ *  2. Development: sibling to mcp-server/ at webrtc-sdk/schema/
+ */
+function findSchemaDir(): string {
+  const __dirname = dirname(fileURLToPath(import.meta.url));
+  const candidates = [
+    resolve(__dirname, '../schema'),          // npm: mcp-server/schema/
+    resolve(__dirname, '../../schema'),       // dev: from dist/ or src/
+    resolve(__dirname, '../../../schema'),    // dev: nested
+  ];
+  for (const dir of candidates) {
+    try {
+      readdirSync(dir);
+      return dir;
+    } catch {
+      // continue
+    }
+  }
+  throw new Error('Could not locate schema directory');
+}
+
+/** Locate AGENTS.md. Checks:
+ *  1. Bundled in npm package: mcp-server/AGENTS.md (copied by prepack)
+ *  2. Development: sibling to mcp-server/ at webrtc-sdk/AGENTS.md
+ */
+function findAgentsMd(): string {
+  const __dirname = dirname(fileURLToPath(import.meta.url));
+  const candidates = [
+    resolve(__dirname, '../AGENTS.md'),       // npm: mcp-server/AGENTS.md
+    resolve(__dirname, '../../AGENTS.md'),    // dev: from dist/ or src/
+    resolve(__dirname, '../../../AGENTS.md'), // dev: nested
+  ];
+  for (const path of candidates) {
+    try {
+      readFileSync(path, 'utf-8');
+      return path;
+    } catch {
+      // continue
+    }
+  }
+  throw new Error('Could not locate AGENTS.md');
+}
+
+const SCHEMA_DIR = findSchemaDir();
+const AGENTS_MD = findAgentsMd();
 
 function readFileSafe(path: string): string {
   try {
