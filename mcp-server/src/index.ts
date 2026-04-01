@@ -35,7 +35,7 @@ async function startHttp(port: number) {
       transport.close();
     });
     await server.connect(transport);
-    await transport.handleRequest(req, res);
+    await transport.handleRequest(req, res, req.body);
   });
 
   app.get('/mcp', async (req, res) => {
