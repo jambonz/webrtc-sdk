@@ -5,19 +5,33 @@ LEVEL=${1:-patch}
 ROOT="$(dirname "$0")/.."
 cd "$ROOT"
 
-# Bump core and capture the new version
-VERSION=$(cd packages/core && npm version "$LEVEL" --no-git-tag-version | tr -d 'v')
+# Read current version from core
+CURRENT=$(node -p "require('./packages/core/package.json').version")
 
-# Bump web and react-native to same version
-cd packages/web
-npm version "$VERSION" --no-git-tag-version --allow-same-version >/dev/null
-cd ../react-native
-npm version "$VERSION" --no-git-tag-version --allow-same-version >/dev/null
-cd "$ROOT"
+# Compute new version
+VERSION=$(node -e "
+  const [major, minor, patch] = '${CURRENT}'.split('.').map(Number);
+  const level = '${LEVEL}';
+  if (level === 'major') console.log(\`\${major+1}.0.0\`);
+  else if (level === 'minor') console.log(\`\${major}.\${minor+1}.0\`);
+  else console.log(\`\${major}.\${minor}.\${patch+1}\`);
+")
 
-# Update cross-dependency on core
-sed -i '' "s/\"@jambonz\/client-sdk-core\": \".*\"/\"@jambonz\/client-sdk-core\": \"$VERSION\"/" \
-  packages/web/package.json packages/react-native/package.json
+echo "Bumping ${CURRENT} → ${VERSION}"
+
+# Update version in all three packages
+for pkg in core web react-native; do
+  node -e "
+    const fs = require('fs');
+    const path = './packages/${pkg}/package.json';
+    const pkg = JSON.parse(fs.readFileSync(path, 'utf8'));
+    pkg.version = '${VERSION}';
+    if (pkg.dependencies && pkg.dependencies['@jambonz/client-sdk-core']) {
+      pkg.dependencies['@jambonz/client-sdk-core'] = '${VERSION}';
+    }
+    fs.writeFileSync(path, JSON.stringify(pkg, null, 2) + '\n');
+  "
+done
 
 # Commit and tag
 git add packages/*/package.json

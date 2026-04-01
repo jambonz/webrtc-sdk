@@ -28,7 +28,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jambonz/jambonz-webrtc-sdk.git",
+    "url": "https://github.com/jambonz/webrtc-sdk.git",
     "directory": "packages/web"
   },
   "keywords": [
