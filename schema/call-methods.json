@@ -79,6 +79,18 @@
       "description": "Stop periodic call quality monitoring.",
       "parameters": [],
       "returns": "void"
+    },
+    "enableNoiseIsolation": {
+      "description": "Enable server-side noise isolation. Sends SIP INFO to the feature server.",
+      "parameters": [
+        { "name": "opts", "type": "{ vendor?: string; level?: number; model?: string }", "required": false, "description": "Optional vendor, level (0-100), and model" }
+      ],
+      "returns": "void"
+    },
+    "disableNoiseIsolation": {
+      "description": "Disable server-side noise isolation. Sends SIP INFO to the feature server.",
+      "parameters": [],
+      "returns": "void"
     }
   }
 }

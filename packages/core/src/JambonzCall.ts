@@ -124,6 +124,21 @@ export class JambonzCall {
     this.session.sendDTMF(tone);
   }
 
+  /** Enable server-side noise isolation via SIP INFO. */
+  enableNoiseIsolation(opts?: { vendor?: string; level?: number; model?: string }): void {
+    this.sendJambonzCommand('noiseIsolation:status', {
+      noise_isolation_status: 'enable',
+      ...opts,
+    });
+  }
+
+  /** Disable server-side noise isolation via SIP INFO. */
+  disableNoiseIsolation(): void {
+    this.sendJambonzCommand('noiseIsolation:status', {
+      noise_isolation_status: 'disable',
+    });
+  }
+
   /**
    * Blind transfer — transfer this call to another target.
    * The current call is replaced by a new call between the remote party
@@ -188,6 +203,14 @@ export class JambonzCall {
       this.qualityMonitor.stop();
       this.qualityMonitor = null;
     }
+  }
+
+  /** Send a jambonz command to the server via SIP INFO. */
+  private sendJambonzCommand(command: string, data: Record<string, unknown>): void {
+    (this.session as any).sendInfo(
+      'application/x-jambonz+json',
+      JSON.stringify({ command, data })
+    );
   }
 
   private buildHeaders(headers?: Record<string, string>): string[] {

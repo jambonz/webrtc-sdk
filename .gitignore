@@ -20,6 +20,12 @@ examples/react-native/ios/
 # Web example build
 examples/web/dist/
 
+# IDE
+.vscode/
+
+# Claude Code
+CLAUDE.md
+
 # OS files
 .DS_Store
 Thumbs.db
