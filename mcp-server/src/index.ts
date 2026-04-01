@@ -61,13 +61,14 @@ async function startHttp(port: number) {
 
 // Determine transport mode from args or env
 const args = process.argv.slice(2);
-const httpFlag = args.indexOf('--http');
+const httpMode = args.includes('--http');
+const portArgIdx = args.indexOf('--port');
+const port = portArgIdx !== -1 && args[portArgIdx + 1]
+  ? parseInt(args[portArgIdx + 1], 10)
+  : parseInt(process.env.PORT || '3000', 10);
 
-if (httpFlag !== -1) {
-  const port = parseInt(args[httpFlag + 1] || process.env.PORT || '3000', 10);
+if (httpMode) {
   startHttp(port);
-} else if (process.env.PORT) {
-  startHttp(parseInt(process.env.PORT, 10));
 } else {
   startStdio();
 }
