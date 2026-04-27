@@ -17,6 +17,12 @@ export interface JambonzClientOptions {
   registerExpires?: number;
   /** SIP User-Agent header (default: "jambonz-webrtc-{version}") */
   userAgent?: string;
+  /**
+   * Web only: hang up active calls when the window is closed or reloaded,
+   * so a SIP BYE is sent before the WebSocket tears down.
+   * @default true
+   */
+  hangupOnUnload?: boolean;
 }
 
 export interface JambonzCallOptions {

@@ -24,7 +24,22 @@ import { WebPlatformAdapter } from './WebPlatformAdapter';
  */
 export function createJambonzClient(options: JambonzClientOptions): JambonzClient {
   const platform = new WebPlatformAdapter();
-  return new JambonzClient(options, platform);
+  const client = new JambonzClient(options, platform);
+
+  if (options.hangupOnUnload !== false && typeof window !== 'undefined') {
+    // Best-effort: send BYE for any active calls before the page tears down.
+    // The WebSocket send buffer is flushed synchronously, so the BYE has a
+    // good chance of reaching the SBC even though the page is unloading.
+    const onUnload = () => {
+      for (const call of client.calls.values()) {
+        call.hangup();
+      }
+    };
+    window.addEventListener('pagehide', onUnload);
+    window.addEventListener('beforeunload', onUnload);
+  }
+
+  return client;
 }
 
 /**
