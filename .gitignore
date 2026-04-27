@@ -29,3 +29,5 @@ CLAUDE.md
 # OS files
 .DS_Store
 Thumbs.db
+/packages/web/dist-bundle
+packages/web/tsup.bundle.config.ts
