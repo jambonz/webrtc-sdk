@@ -17,6 +17,13 @@ export interface JambonzClientOptions {
   registerExpires?: number;
   /** SIP User-Agent header (default: "jambonz-webrtc-{version}") */
   userAgent?: string;
+  /**
+   * Max ms to wait for ICE gathering before sending the INVITE or 200 OK.
+   * The SDP is sent on the first srflx/relay candidate, or this long after the first candidate.
+   * 0 waits for gathering to complete, which can take tens of seconds on some networks.
+   * @default 1000
+   */
+  iceGatheringTimeout?: number;
 }
 
 export interface JambonzCallOptions {

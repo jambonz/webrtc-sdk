@@ -200,6 +200,7 @@ interface JambonzClientOptions {
   autoRegister?: boolean;   // Auto-register on connect (default: true)
   registerExpires?: number; // Registration expiry in seconds (default: 300)
   userAgent?: string;       // Custom User-Agent header
+  iceGatheringTimeout?: number; // Max ms to wait for ICE before sending SDP (default: 1000, 0 = wait for complete)
 }
 
 // Methods
