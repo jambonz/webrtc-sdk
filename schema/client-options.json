@@ -45,6 +45,11 @@
     "userAgent": {
       "type": "string",
       "description": "Custom SIP User-Agent header value"
+    },
+    "iceGatheringTimeout": {
+      "type": "number",
+      "default": 1000,
+      "description": "Max ms to wait for ICE gathering before sending the INVITE or 200 OK. The SDP is sent at once on the first srflx/relay candidate. 0 waits for gathering to complete"
     }
   },
   "additionalProperties": false

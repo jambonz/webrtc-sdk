@@ -213,6 +213,8 @@ export class JambonzClient {
       });
     }
 
+    this.sendSdpEarly(session);
+
     const call = new JambonzCall(session, this.platform);
     this.trackCall(call);
 
@@ -361,6 +363,7 @@ export class JambonzClient {
 
     this.ua.on('newRTCSession', (data: IncomingRTCSessionEvent) => {
       if (data.originator === 'remote') {
+        this.sendSdpEarly(data.session as RTCSession);
         const call = new JambonzCall(data.session as RTCSession, this.platform);
         this.trackCall(call);
         this.emitter.emit('incoming', call);
@@ -375,6 +378,24 @@ export class JambonzClient {
         const contentType = data.request.getHeader('Content-Type') ?? 'text/plain';
         this.emitter.emit('message', { from, body, contentType });
       }
+    });
+  }
+
+  /**
+   * Send the SDP without waiting for ICE gathering to complete.
+   * JsSIP otherwise holds the INVITE / 200 OK until gathering is done.
+   */
+  private sendSdpEarly(session: RTCSession): void {
+    const timeout = this.options.iceGatheringTimeout ?? 1000;
+    if (timeout <= 0) return;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    session.on('icecandidate', ({ candidate, ready }) => {
+      const send = () => {
+        clearTimeout(timer);
+        ready();
+      };
+      if (candidate.type === 'srflx' || candidate.type === 'relay') send();
+      else if (!timer) timer = setTimeout(send, timeout);
     });
   }
 

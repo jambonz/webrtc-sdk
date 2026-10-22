@@ -134,6 +134,7 @@ createJambonzClient(options: JambonzClientOptions): JambonzClient
 | `autoRegister` | `boolean` | No | `true` | Automatically register on connect |
 | `registerExpires` | `number` | No | `300` | Registration TTL in seconds |
 | `userAgent` | `string` | No | SDK default | SIP User-Agent header value |
+| `iceGatheringTimeout` | `number` | No | `1000` | Max ms to wait for ICE gathering before sending the INVITE / 200 OK (sent at once on the first srflx/relay candidate). `0` waits for gathering to complete |
 
 ### JambonzClient
 
